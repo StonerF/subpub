@@ -1,6 +1,7 @@
 package config
 
 import (
+	"log"
 	"os"
 	"strconv"
 	"time"
@@ -21,21 +22,21 @@ type GRPCConfig struct {
 func MustLoad() *Config {
 	err := godotenv.Load("../.env")
 	if err != nil {
-		panic("Error loading .env file" + err.Error())
+		log.Print(".env don't find")
 	}
 
 	conf := &Config{}
 
 	conf.Env = os.Getenv("ENV")
 	if conf.Env == "" {
-		panic("Env is empty")
+		conf.Env = "local"
 	}
 
 	port := os.Getenv("PORT")
 	val, err := strconv.Atoi(port)
 
 	if err != nil {
-		conf.GRPC.Port = 8080
+		conf.GRPC.Port = 44044
 	} else {
 		conf.GRPC.Port = val
 
